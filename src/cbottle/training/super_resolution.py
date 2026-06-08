@@ -273,6 +273,8 @@ def train(
     WORLD_SIZE = cbottle_dist.get_world_size()
     WORLD_RANK = cbottle_dist.get_rank()
 
+    print(f"Rank {WORLD_RANK}/{WORLD_SIZE}; Local rank: {LOCAL_RANK}")
+
     os.makedirs(output_path, exist_ok=True)
     training_sampler = None
     test_sampler = None
@@ -313,7 +315,7 @@ def train(
         num_workers=dataloader_num_workers,
         sampler=training_sampler,
         pin_memory=True,
-        multiprocessing_context="spawn" if dataloader_num_workers > 0 else None,
+        multiprocessing_context="fork" if dataloader_num_workers > 0 else None,
     )
     test_loader = torch.utils.data.DataLoader(
         test_dataset,

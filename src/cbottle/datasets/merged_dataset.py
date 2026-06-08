@@ -220,10 +220,10 @@ class TimeMergedDataset(torch.utils.data.IterableDataset):
                 for idx in frame_idxs:
                     time = times_for_chunk[idx]
                     arr_i = {k: v[idx] for k, v in arr.items()}
-                    timestamp = pd.Timestamp(time)
-                    cftimestamp = cbottle.datetime.as_cftime(timestamp)
+                    #timestamp = pd.Timestamp(time)
+                    #cftimestamp = cbottle.datetime.as_cftime(time)
                     frames.append(arr_i)
-                    timestamps.append(cftimestamp)
+                    timestamps.append(time)
 
                 window_tensor = self.transform(timestamps, frames)
 

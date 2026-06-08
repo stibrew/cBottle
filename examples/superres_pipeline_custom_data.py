@@ -24,8 +24,8 @@ from cbottle.training import super_resolution
 sys.path.append("scripts")
 from inference_multidiffusion import inference as inference_super_resolution
 
-target_hpx_level = 6
-input_hpx_level = 3
+target_hpx_level = 9
+input_hpx_level = 4
 
 # dataset build
 variable_list_2d = ["rlut", "pr"]
@@ -49,7 +49,7 @@ def encode_task(t, d, mean, scale):
     return {
         "condition": condition,
         "target": target.astype(np.float32),
-        "timestamp": t.timestamp(),
+        "timestamp": t #.timestamp(),
     }
 
 
@@ -82,7 +82,7 @@ def dataset_wrapper(*, split: str = ""):
     dataset._mean = scale
     dataset.batch_info = SimpleNamespace()
     dataset.batch_info.channels = variable_list_2d
-    dataset.time_units = "seconds since 1970-1-1 0:0:0"
+    dataset.time_units = "seconds since 2020-01-01T00:00:00"
     dataset.calendar = "standard"
     return dataset
 
@@ -93,11 +93,12 @@ def dataset_wrapper(*, split: str = ""):
 super_resolution.train(
     output_path="training_output",
     customized_dataset=dataset_wrapper,
-    num_steps=1000,
-    log_freq=100,
+    num_steps=1000000,
+    log_freq=1,
     lr_level=input_hpx_level,
-    train_batch_size=50,
+    train_batch_size=100,
     test_batch_size=50,
+    #dataloader_num_workers=0
 )
 
 # super-res model inferencing

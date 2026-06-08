@@ -77,7 +77,7 @@ class ZarrLoader:
 
         self.group = sync(
             zarr.api.asynchronous.open_group(
-                path, storage_options=storage_options, use_consolidated=True, mode="r"
+                path, storage_options=storage_options, use_consolidated=False, mode="r"
             )
         )
 
